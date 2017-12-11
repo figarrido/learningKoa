@@ -1,4 +1,3 @@
-
 exports.up = (knex, Promise) => {
   return knex.schema.createTable('movies', (table) => {
     table.increments()
@@ -10,5 +9,5 @@ exports.up = (knex, Promise) => {
 }
 
 exports.down = (knex, Promise) => {
-  knex.schema.dropTable('movies')
+  return knex.schema.dropTable('movies')
 }

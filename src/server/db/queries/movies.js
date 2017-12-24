@@ -11,7 +11,14 @@ const getSingleMovie = id => {
     .where({id: parseInt(id)})
 }
 
+const addMovie = movie => {
+  return knex('movies')
+    .insert(movie)
+    .returning('*')
+}
+
 module.exports = {
   getAllMovies,
-  getSingleMovie
+  getSingleMovie,
+  addMovie
 }

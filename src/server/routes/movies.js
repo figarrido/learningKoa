@@ -36,4 +36,29 @@ router.get(`${BASE_URL}/:id`, async ctx => {
   }
 })
 
+router.post(`${BASE_URL}`, async ctx => {
+  try {
+    const movie = await queries.addMovie(ctx.request.body)
+    if (movie.length) {
+      ctx.status = 201
+      ctx.body = {
+        status: 'success',
+        data: movie
+      }
+    } else {
+      ctx.status = 400
+      ctx.body = {
+        status: 'error',
+        message: 'something went wrong'
+      }
+    }
+  } catch (err) {
+    ctx.status = 400
+    ctx.body = {
+      status: 'error',
+      message: err.message || 'Sorry, an error has ocurred'
+    }
+  }
+})
+
 module.exports = router

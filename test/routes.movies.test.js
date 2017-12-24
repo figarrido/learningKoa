@@ -64,7 +64,45 @@ describe('routes : movies', () => {
           done()
         })
     })
+  })
 
+  describe('POST /api/v1/movies', () => {
+    it('should return the movie that was added', done => {
+      chai.request(server)
+        .post('/api/v1/movies')
+        .send({
+          name: 'Titanic',
+          genre: 'Drama',
+          rating: 8,
+          explicit: true
+        })
+        .end((err, res) => {
+          should.not.exist(err)
+          res.status.should.eql(201)
+          res.type.should.eql('application/json')
+          res.body.status.should.eql('success')
+          res.body.data[0].should.include.keys(
+            'id', 'name', 'genre', 'rating', 'explicit'
+          )
+          done()
+        })
+    })
+
+    it('should throw an error if the payload is malformed', done => {
+      chai.request(server)
+        .post('/api/v1/movies')
+        .send({
+          name: 'Titanic'
+        })
+        .end((err, res) => {
+          should.exist(err)
+          res.status.should.eql(400)
+          res.type.should.eql('application/json')
+          res.body.status.should.eql('error')
+          should.exist(res.body.message)
+          done()
+        })
+    })
   })
 
 })
